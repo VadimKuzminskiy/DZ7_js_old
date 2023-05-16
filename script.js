@@ -1,4 +1,4 @@
-// Функция для создания объекта студента
+
 function createStudent(name, age) {
     return {
       name: name,
@@ -23,9 +23,23 @@ function createStudent(name, age) {
           }
         },
 
-        
+        addMarks: function(name, mark) {
+          let student = students.find(function(student){
+            return student.name === name
+          });
+          if(student) {
+            student.marks.push(mark)
+          }
+        },
 
-
+        averegeMark: function(name) {
+          let student =students.find(function(student){
+            return student.name === name
+          });
+          if(student) {
+            
+          }
+        }
 
 
       }
@@ -39,6 +53,16 @@ studentsManager.addStudent('Иван', 20);
 studentsManager.addStudent('Маша', 18);
 studentsManager.addStudent('Федя', 21);
 studentsManager.addStudent('Оля', 22);
+console.log(students);
 
-studentsManager.deleteStudent('Федя');
-console.log(students)
+// studentsManager.deleteStudent('Федя');
+console.log(students);
+
+studentsManager.addMarks('Иван', 5);
+studentsManager.addMarks('Маша', 5);
+studentsManager.addMarks('Федя', 2);
+studentsManager.addMarks('Оля', 4);
+studentsManager.addMarks('Иван', 5);
+studentsManager.addMarks('Федя', 2);
+console.log(students);
+
