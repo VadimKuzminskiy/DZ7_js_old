@@ -1,68 +1,117 @@
-
 function createStudent(name, age) {
     return {
-      name: name,
-      age: age,
-      marks: []
+        age: age,
+        name: name,
+        marks: []
     };
-  }
+}
 
-    function manageStudents(students){
-      return{
-        addStudent: function(name,age){
-          // let student = createStudent(name, age);
-          students.push(createStudent(name,age))
+function manageStudents(students) {
+    return {
+
+        // 1. добавление нового студента
+        addStudent: function(name, age){
+            students.push(createStudent(name, age));
         },
 
-        deleteStudent: function(name){
-          let index = students.findIndex(function(student){
-            return student.name === name
-          });
-          if(index !== -1) {
-            students.splice(index, 1)
-          }
-        },
+         // 2. удаление студента по имени
+         deleteStudent: function(name){
+            let index = students.findIndex(function(student) {
+                return student.name === name;
+            });
+            if(index !== -1) {
+                students.splice(index, 1);
+            }
+         },
 
-        addMarks: function(name, mark) {
-          let student = students.find(function(student){
-            return student.name === name
-          });
-          if(student) {
-            student.marks.push(mark)
-          }
-        },
+         // 3. добавление оценки студенту за занятие(№ занятия === индекс оценки в массиве)
+         addMarks: function(name, mark) {
+            let student = students.find(function(student){
+                return student.name === name;
+            });
+            if(student){
+                student.marks.push(mark);
+            };
+         },
 
-        averegeMark: function(name) {
-          let student =students.find(function(student){
-            return student.name === name
-          });
-          if(student) {
-            
-          }
-        }
+         // 4. получение средней оценки студента по имени
+         averageMark: function(name) {
+            let student = students.find(function(student){
+                return student.name === name;
+            });
+            if(student){
+                let sumMarks = student.marks.reduce(function(sum, mark){
+                    return sum + mark
+                }, 0);
+                return sumMarks / student.marks.length
+            }
+         },
 
+         // 5. получение средней оценки группы за занятие
+         averageGroupMark: function() {
+            let sumMarks = students.reduce(function(sum, student){
+                let studentSumMarks = student.marks.reduce(function(studentSum, mark) {
+                    return studentSum + mark;
+                }, 0);
+                return sum + studentSumMarks / student.marks.length;
+            }, 0);
+            return sumMarks / students.length;
+         },
 
-      }
+         // 6. получение отсортированного по именам списка студентов
+         sortStudents: function() {
+            return students.slice(0).sort(function(a, b){
+                return a.name.localeCompare(b.name);
+            });
+         },
+
+         // 7. получение отсортированного по среднему баллу списка студентов
+         sortStudentMarks: function() {
+            let sortMarks = students.map(function(student){
+                return {
+                    name: student.name,
+                    avg: student.marks.reduce(function(sum, num){
+                        return sum + num 
+                    }, 0) / student.marks.length
+                }
+            });
+
+            sortMarks.sort(function(a, b){
+                return b.avg - a.avg;
+            });
+            return sortMarks; 
+         }
     }
-
+}
 
 const students = [];
 const studentsManager = manageStudents(students);
+  
+  studentsManager.addStudent('Иван', 20);
+  studentsManager.addStudent('Маша', 18);
+  studentsManager.addStudent('Федя', 21);
+  studentsManager.addStudent('Оля', 22);
+  studentsManager.addStudent('Аня', 22);
+  console.log(students);
 
-studentsManager.addStudent('Иван', 20);
-studentsManager.addStudent('Маша', 18);
-studentsManager.addStudent('Федя', 21);
-studentsManager.addStudent('Оля', 22);
-console.log(students);
+//   studentsManager.deleteStudent('Федя');
+  console.log(students);
 
-// studentsManager.deleteStudent('Федя');
-console.log(students);
+  studentsManager.addMarks('Иван', 5);
+  studentsManager.addMarks('Маша', 5);
+  studentsManager.addMarks('Федя', 2);
+  studentsManager.addMarks('Оля', 4);
+  studentsManager.addMarks('Иван', 5);
+  studentsManager.addMarks('Федя', 2);
+  studentsManager.addMarks('Аня', 5);
+  studentsManager.addMarks('Аня', 4);
+  console.log(students);
 
-studentsManager.addMarks('Иван', 5);
-studentsManager.addMarks('Маша', 5);
-studentsManager.addMarks('Федя', 2);
-studentsManager.addMarks('Оля', 4);
-studentsManager.addMarks('Иван', 5);
-studentsManager.addMarks('Федя', 2);
-console.log(students);
+  console.log(studentsManager.averageMark('Иван'));
+  console.log(studentsManager.averageMark('Аня'));
 
+  console.log(studentsManager.averageGroupMark());
+
+  console.log(studentsManager.sortStudents());
+
+  console.log(studentsManager.sortStudentMarks());
