@@ -25,7 +25,7 @@ function manageStudents(students) {
          },
 
          // 3. добавление оценки студенту за занятие(№ занятия === индекс оценки в массиве)
-         addMarks: function(name, mark) {
+         addMarks: function(name, mark, lessonNumber) {
             let student = students.find(function(student){
                 return student.name === name;
             });
@@ -47,16 +47,25 @@ function manageStudents(students) {
             }
          },
 
-         // 5. получение средней оценки группы за занятие
-         averageGroupMark: function() {
-            let sumMarks = students.reduce(function(sum, student){
-                let studentSumMarks = student.marks.reduce(function(studentSum, mark) {
-                    return studentSum + mark;
-                }, 0);
-                return sum + studentSumMarks / student.marks.length;
-            }, 0);
-            return sumMarks / students.length;
-         },
+        // 5. получение средней оценки группы за занятие
+        averageGroupMark: function(lessonNumber) {
+            let sumMarks = 0;
+            let countStudents = 0;
+
+            students.forEach(function(student) {
+                if (student.marks[lessonNumber] !== undefined) {
+                    sumMarks += student.marks[lessonNumber];
+                    countStudents++;
+                }
+            });
+
+            if (countStudents > 0) {
+                return sumMarks / countStudents;
+            } else {
+                return 0;
+            }
+        },
+
 
          // 6. получение отсортированного по именам списка студентов
          sortStudents: function() {
@@ -97,20 +106,20 @@ const studentsManager = manageStudents(students);
 //   studentsManager.deleteStudent('Федя');
   console.log(students);
 
-  studentsManager.addMarks('Иван', 5);
-  studentsManager.addMarks('Маша', 5);
-  studentsManager.addMarks('Федя', 2);
-  studentsManager.addMarks('Оля', 4);
-  studentsManager.addMarks('Иван', 5);
-  studentsManager.addMarks('Федя', 2);
-  studentsManager.addMarks('Аня', 5);
-  studentsManager.addMarks('Аня', 4);
+  studentsManager.addMarks('Иван', 5, 1);
+  studentsManager.addMarks('Маша', 5,1);
+  studentsManager.addMarks('Федя', 2, 1);
+  studentsManager.addMarks('Оля', 4, 1);
+  studentsManager.addMarks('Иван', 5, 2);
+  studentsManager.addMarks('Федя', 2, 2);
+  studentsManager.addMarks('Аня', 5, 1);
+  studentsManager.addMarks('Аня', 4, 2);
   console.log(students);
 
   console.log(studentsManager.averageMark('Иван'));
   console.log(studentsManager.averageMark('Аня'));
 
-  console.log(studentsManager.averageGroupMark());
+  console.log(studentsManager.averageGroupMark(1));
 
   console.log(studentsManager.sortStudents());
 
