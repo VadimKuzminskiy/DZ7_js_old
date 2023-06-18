@@ -48,22 +48,38 @@ function manageStudents(students) {
          },
 
         // 5. получение средней оценки группы за занятие
-        averageGroupMark: function(lessonNumber) {
-            let sumMarks = 0;
-            let countStudents = 0;
+        // averageGroupMark: function(lessonNumber) {
+        //     let sumMarks = 0;
+        //     let countStudents = 0;
 
-            students.forEach(function(student) {
-                if (student.marks[lessonNumber] !== undefined) {
-                    sumMarks += student.marks[lessonNumber];
-                    countStudents++;
+        //     students.forEach(function(student) {
+        //         if (student.marks[lessonNumber] !== undefined) {
+        //             sumMarks += student.marks[lessonNumber];
+        //             countStudents++;
+        //         }
+        //     });
+
+        //     if (countStudents > 0) {
+        //         return sumMarks / countStudents;
+        //     } else {
+        //         return 0;
+        //     }
+        // },
+
+        averageGroupMark: function sortStudentMarks() {
+            let sortMarks = students.map(function(student) {
+                return {
+                    name: student.name,
+                    avg: student.marks.reduce(function(sum, num){
+                        return sum + num 
+                    }, 0) / student.marks.length
                 }
             });
-
-            if (countStudents > 0) {
-                return sumMarks / countStudents;
-            } else {
-                return 0;
-            }
+        
+            sortMarks.sort(function(a, b){
+                return b.avg - a.avg;
+            });
+            return sortMarks; 
         },
 
 
