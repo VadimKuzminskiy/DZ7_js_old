@@ -48,39 +48,24 @@ function manageStudents(students) {
          },
 
         // 5. получение средней оценки группы за занятие
-        // averageGroupMark: function(lessonNumber) {
-        //     let sumMarks = 0;
-        //     let countStudents = 0;
+        averageGroupMark: function(lessonNumber) {
+            let sumMarks = 0;
+            let countStudents = 0;
 
-        //     students.forEach(function(student) {
-        //         if (student.marks[lessonNumber] !== undefined) {
-        //             sumMarks += student.marks[lessonNumber];
-        //             countStudents++;
-        //         }
-        //     });
-
-        //     if (countStudents > 0) {
-        //         return sumMarks / countStudents;
-        //     } else {
-        //         return 0;
-        //     }
-        // },
-
-        averageGroupMark: function sortStudentMarks() {
-            let sortMarks = students.map(function(student) {
-                return {
-                    name: student.name,
-                    avg: student.marks.reduce(function(sum, num){
-                        return sum + num 
-                    }, 0) / student.marks.length
+            students.forEach(function(student) {
+                if (student.marks[lessonNumber] !== undefined) {
+                    sumMarks += student.marks[lessonNumber];
+                    countStudents++;
                 }
             });
-        
-            sortMarks.sort(function(a, b){
-                return b.avg - a.avg;
-            });
-            return sortMarks; 
+
+            if (countStudents > 0) {
+                return sumMarks / countStudents;
+            } else {
+                return 0;
+            }
         },
+
 
 
          // 6. получение отсортированного по именам списка студентов
@@ -90,22 +75,14 @@ function manageStudents(students) {
             });
          },
 
-         // 7. получение отсортированного по среднему баллу списка студентов
-         sortStudentMarks: function() {
-            let sortMarks = students.map(function(student){
-                return {
-                    name: student.name,
-                    avg: student.marks.reduce(function(sum, num){
-                        return sum + num 
-                    }, 0) / student.marks.length
-                }
+        // 7. получение отсортированного по среднему баллу списка студентов
+        
+        sortStudentMarks: function() {
+            return students.slice(0).sort(function(a, b) {
+              return studentsManager.averageMark(b.name) - studentsManager.averageMark(a.name);
             });
-
-            sortMarks.sort(function(a, b){
-                return b.avg - a.avg;
-            });
-            return sortMarks; 
-         }
+          }
+  
     }
 }
 
