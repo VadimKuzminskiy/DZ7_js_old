@@ -7,7 +7,7 @@ function createStudent(name, age) {
 }
 
 function manageStudents(students) {
-    return {
+    const stud = {
 
         // 1. добавление нового студента
         addStudent: function(name, age){
@@ -79,11 +79,12 @@ function manageStudents(students) {
         
         sortStudentMarks: function() {
             return students.slice(0).sort(function(a, b) {
-              return studentsManager.averageMark(b.name) - studentsManager.averageMark(a.name);
+              return stud.averageMark(b.name) - stud.averageMark(a.name);
             });
           }
-  
+            
     }
+    return stud
 }
 
 const students = [];
